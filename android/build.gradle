@@ -3,6 +3,8 @@ version '1.0'
 
 buildscript {
    repositories {
+   google()
+        jcenter()
       maven {
         name "Tapjoy's maven repo"
         url "https://sdk.tapjoy.com/"
