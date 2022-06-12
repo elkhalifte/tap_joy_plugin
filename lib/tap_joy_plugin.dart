@@ -57,6 +57,8 @@ typedef void TJAwardCurrencyHandler(
 typedef void TJGetCurrencyBalanceHandler(
     String? currencyName, int? amount, String? error);
 
+typedef void TJUserIdHandler(bool? set);
+
 /// EarnedCurrencyAlertHandler returns String currencyName, int amount, String error
 /// In order to notify users that they’ve earned virtual currency since the last time the app queried the user’s currency balance,
 /// if function is successful , error is null
@@ -84,6 +86,7 @@ class TapJoyPlugin {
   TJAwardCurrencyHandler? _awardCurrencyHandler;
   TJGetCurrencyBalanceHandler? _getCurrencyBalanceHandler;
   TJEarnedCurrencyAlertHandler? _earnedCurrencyAlertHandler;
+  TJUserIdHandler? _getUserIdHandler;
 
   /// Set connection result handler which returns TapJoyConnectionResult
   void setConnectionResultHandler(TJConnectionResultHandler handler) {
@@ -103,6 +106,10 @@ class TapJoyPlugin {
   /// set Get currency Balance handler which returns String currencyName, int amount, String error
   void setGetCurrencyBalanceHandler(TJGetCurrencyBalanceHandler handler) {
     _getCurrencyBalanceHandler = handler;
+  }
+
+  void setUserIdHandler(TJUserIdHandler handler) {
+    _getUserIdHandler = handler;
   }
 
   /// set Earned currency Alert handler which returns String currencyName, int amount, String error
@@ -137,7 +144,6 @@ class TapJoyPlugin {
 
         default:
           return IOSATTAuthResult.none;
-
       }
     } else {
       return IOSATTAuthResult.android;
@@ -164,7 +170,7 @@ class TapJoyPlugin {
   }
 
   /// set user ID
-  Future<void> setUserID({required String userID}) async {
+  Future<bool?> setUserID({required String userID}) async {
     await _channel.invokeMethod('setUserID', <String, dynamic>{
       'userID': userID,
     });
@@ -193,8 +199,8 @@ class TapJoyPlugin {
         break;
       case 'requestSuccess':
         String? placementName = call.arguments["placementName"];
-        TJPlacement? tjPlacement = placements.firstWhereOrNull(
-            (element) => element.name == placementName);
+        TJPlacement? tjPlacement = placements
+            .firstWhereOrNull((element) => element.name == placementName);
 
         if (tjPlacement != null) {
           if (tjPlacement._handler != null) {
@@ -205,8 +211,8 @@ class TapJoyPlugin {
         break;
       case 'requestFail':
         String? placementName = call.arguments["placementName"];
-        TJPlacement? tjPlacement = placements.firstWhereOrNull(
-            (element) => element.name == placementName);
+        TJPlacement? tjPlacement = placements
+            .firstWhereOrNull((element) => element.name == placementName);
         String? error = call.arguments["error"];
         if (tjPlacement != null) {
           if (tjPlacement._handler != null) {
@@ -217,8 +223,8 @@ class TapJoyPlugin {
         break;
       case 'contentReady':
         String? placementName = call.arguments["placementName"];
-        TJPlacement? tjPlacement = placements.firstWhereOrNull(
-            (element) => element.name == placementName);
+        TJPlacement? tjPlacement = placements
+            .firstWhereOrNull((element) => element.name == placementName);
 
         if (tjPlacement != null) {
           if (tjPlacement._handler != null) {
@@ -229,8 +235,8 @@ class TapJoyPlugin {
         break;
       case 'contentDidAppear':
         String? placementName = call.arguments["placementName"];
-        TJPlacement? tjPlacement = placements.firstWhereOrNull(
-            (element) => element.name == placementName);
+        TJPlacement? tjPlacement = placements
+            .firstWhereOrNull((element) => element.name == placementName);
 
         if (tjPlacement != null) {
           if (tjPlacement._handler != null) {
@@ -241,8 +247,8 @@ class TapJoyPlugin {
         break;
       case 'clicked':
         String? placementName = call.arguments["placementName"];
-        TJPlacement? tjPlacement = placements.firstWhereOrNull(
-            (element) => element.name == placementName);
+        TJPlacement? tjPlacement = placements
+            .firstWhereOrNull((element) => element.name == placementName);
 
         if (tjPlacement != null) {
           if (tjPlacement._handler != null) {
@@ -253,8 +259,8 @@ class TapJoyPlugin {
         break;
       case 'contentDidDisAppear':
         String? placementName = call.arguments["placementName"];
-        TJPlacement? tjPlacement = placements.firstWhereOrNull(
-            (element) => element.name == placementName);
+        TJPlacement? tjPlacement = placements
+            .firstWhereOrNull((element) => element.name == placementName);
 
         if (tjPlacement != null) {
           if (tjPlacement._handler != null) {
@@ -269,6 +275,12 @@ class TapJoyPlugin {
         String? error = call.arguments["error"];
         if (this._getCurrencyBalanceHandler != null) {
           this._getCurrencyBalanceHandler!(currencyName, balance, error);
+        }
+        break;
+      case 'UserIdSetted':
+        bool? balance = call.arguments["value"];
+        if (this._getUserIdHandler != null) {
+          this._getUserIdHandler!(balance);
         }
         break;
       case 'onSpendCurrencyResponse':
