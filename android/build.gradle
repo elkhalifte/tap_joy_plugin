@@ -32,7 +32,7 @@ android {
         minSdkVersion 16
     }
     dependencies {
-        implementation 'com.tapjoy:tapjoy-android-sdk:12.7.1@aar'
+        implementation 'com.tapjoy:tapjoy-android-sdk:12.10.0'
         implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
     }
 }
