@@ -5,10 +5,10 @@ buildscript {
    repositories {
    google()
         jcenter()
-      maven {
-        name "Tapjoy's maven repo"
-        url "https://sdk.tapjoy.com/"
-      }
+       maven {
+            name "Tapjoy's maven repo"
+            url "https://tapjoy.bintray.com/maven"
+        }
     }
 
     dependencies {
