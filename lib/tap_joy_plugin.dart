@@ -170,11 +170,10 @@ class TapJoyPlugin {
   }
 
   /// set user ID
-  Future<bool?> setUserID({required String userID}) async {
+  Future<void> setUserID({required String userID}) async {
     await _channel.invokeMethod('setUserID', <String, dynamic>{
       'userID': userID,
     });
-    return;
   }
 
   Future<bool?> _createPlacement(TJPlacement tjPlacement) async {
