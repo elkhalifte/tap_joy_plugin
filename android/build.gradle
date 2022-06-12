@@ -7,11 +7,6 @@ buildscript {
         name "Tapjoy's maven repo"
         url "https://sdk.tapjoy.com/"
       }
-      maven {
-        name 'Google'
-        url 'https://maven.google.com/'
-      }
-
     }
 
     dependencies {
@@ -35,7 +30,7 @@ android {
         minSdkVersion 16
     }
     dependencies {
-        implementation 'com.tapjoy:tapjoy-android-sdk:12.10.0'
+        implementation 'com.tapjoy:tapjoy-android-sdk:12.8.0@aar'
         implementation 'com.google.android.gms:play-services-ads-identifier:17.0.0'
     }
 }
